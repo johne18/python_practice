@@ -53,7 +53,7 @@ While A is waiting for the network, python can work on B or C.
 async def get_user():
     response = await fetch_user()
     return response
-
+ 
 coro = get_user()
 ```
 This way of writing doesn't actually run get_user() yet, but gives a coroutine object.  
