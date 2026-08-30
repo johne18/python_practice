@@ -7,12 +7,10 @@ from aiolimiter import AsyncLimiter
 from project_one_dir.constants import POKEMON_IDS, POKEMON_API
 
 
-# def aggregate_pokemon_data_by_type
-
-
 async def fetch_pokemon(session, semaphore, rate_limiter, pokemon_id):
     pokemon_api_id = POKEMON_API + f"/pokemon/{pokemon_id}"
 
+    # Can add a retry
     async with semaphore:
         async with rate_limiter:
             try:
@@ -22,7 +20,9 @@ async def fetch_pokemon(session, semaphore, rate_limiter, pokemon_id):
                     return data
             except Exception as e:
                 print(f"Error fetching data for Pokemon ID {pokemon_id}: {e}")
-                return None
+                # if attempt == max_retries:
+                #     return None
+                # await asyncio.sleep(1)  # Wait for a second before retrying
 
 
 async def main():
@@ -40,6 +40,7 @@ async def main():
         pokemon_data_list = await asyncio.gather(*tasks)
 
     end_time = time.time()
+    print(f"Total time taken to fetch data for {num_pokemon_ids} Pokemon IDs: {end_time - start_time:.2f} seconds")
 
     print(f"First 10 fetched Pokemon data:")
     for pokemon in pokemon_data_list[:10]:
@@ -48,7 +49,6 @@ async def main():
         print(pokemon["types"])
         print("="*80)
 
-    print(f"Total time taken to fetch data for {num_pokemon_ids} Pokemon IDs: {end_time - start_time:.2f} seconds")
 
 if __name__ == "__main__":
     asyncio.run(main())

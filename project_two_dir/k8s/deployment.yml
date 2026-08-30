@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pokemon-fastapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pokemon-fastapi
+  template:
+    metadata:
+      labels:
+        app: pokemon-fastapi
+    spec:
+      containers:
+        - name: pokemon-fastapi
+          image: pokemon-fastapi:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: pokemon-config
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
