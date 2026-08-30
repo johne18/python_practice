@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pokemon-worker
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: worker
+          image: pokemon-worker:1.0
+          env:
+            - name: API_URL
+              value: "http://pokemon-fastapi"

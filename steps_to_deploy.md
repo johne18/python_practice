@@ -27,7 +27,7 @@ k8s logging and debugging
 - k8sctl describe pod <pod_name>
 
 k8s rollouts and deletes
-- kubectl set image deployment/<name_of_k8s_cluster> <name_of_k8s_cluster>=<newly_deployed_image>
+- kubectl set image deployment/<name_of_k8s_cluster> <name_of_k8s_cluster>=<newly_deployed_image> - rolling update
 - kubectl rollout restart deployment/<name_of_k8s_cluster>
 - kubectl rollout undo deployment/<name_of_k8s_cluster>
 - kubectl rollout status deployment/<name_of_k8s_cluster>

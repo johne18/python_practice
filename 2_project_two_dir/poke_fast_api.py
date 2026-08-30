@@ -57,4 +57,4 @@ async def get_pokemon_by_id(pokemon_id: int):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("project_one_dir.async.project_async:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("2_project_two_dir.async.project_async:app", host="0.0.0.0", port=8000, reload=True)
