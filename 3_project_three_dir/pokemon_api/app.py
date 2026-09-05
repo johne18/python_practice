@@ -2,10 +2,13 @@ import aiohttp
 import asyncio
 import os
 import psycopg2
+import time
 
 from aiolimiter import AsyncLimiter
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import Response
 from pydantic import BaseModel
+from prometheus_client import Counter, Histogram, generate_latest
 from typing import List
 
 
@@ -16,6 +19,18 @@ DB_NAME = os.getenv("POSTGRES_DB", "pokemon")
 DB_USER = os.getenv("POSTGRES_USER", "postgres")
 DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
 POKEMON_API = os.getenv("POKEMON_API_URL", "https://pokeapi.co/api/v2")
+
+POKEMON_REQUESTS = Counter(
+    "pokemon_requests_total",
+    "Total Pokemon API requests",
+    ["method", "endpoint", "status"],
+)
+
+POKEMON_REQUEST_DURATION = Histogram(
+    "pokemon_request_duration_seconds",
+    "Pokemon API request duration",
+    ["endpoint"],
+)
 
 class PokemonPayload(BaseModel):
     id: int
@@ -34,9 +49,26 @@ def get_connection():
     )
 
 
+@app.get("/metrics")
+async def metrics():
+    return Response(
+        content=generate_latest(),
+        media_type="text/plain",
+    )
+
+
 @app.get("/health")
 async def health():
-    return {"status": "ok"}
+    start_time = time.perf_counter()
+
+    try:
+        result = {"status": "ok"}
+        POKEMON_REQUESTS.labels("GET", "/health", "200").inc()
+        return result
+    finally:
+        POKEMON_REQUEST_DURATION.labels("/health").observe(
+            time.perf_counter() - start_time
+        )
 
 
 @app.get("/pokemon/{pokemon_id}")

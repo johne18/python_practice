@@ -5,3 +5,4 @@ aiolimiter
 psycopg2-binary
 # psycopg2
 requests
+prometheus-client
