@@ -14,13 +14,15 @@ spec:
     spec:
       containers:
         - name: pokemon-fastapi
-          image: pokemon-fastapi:2.5
+          image: pokefast-api:dockeronly-v2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
           envFrom:
             - configMapRef:
                 name: pokemon-config
+            - secretRef:
+                name: postgres-secret
           resources:
             requests:
               cpu: "100m"
@@ -28,3 +30,16 @@ spec:
             limits:
               cpu: "500m"
               memory: "256Mi"
+          volumeMounts:
+            - name: a-volume
+              mountPath: /etc/configs
+              readOnly: true
+      volumes:
+      - name: a-volume
+        configMap:
+          name: pokemon-config
+          items:
+          - key: example.properties
+            path: example.properties
+
+        

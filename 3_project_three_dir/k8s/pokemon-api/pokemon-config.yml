@@ -8,7 +8,8 @@ data:
   POKEMON_RATE_LIMIT: "100"
   POKEMON_RATE_SECONDS: "3"
   POKEMON_TIMEOUT: "10"
-  DB_HOST: "postgres"
-  DB_NAME: "pokemon"
-  DB_USER: "postgres"
-  DB_PASSWORD: "postgres"
+
+  example.properties: |
+    property_one=10
+    property_two=a_string
+    property_three-4.0

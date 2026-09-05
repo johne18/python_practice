@@ -2,4 +2,6 @@ fastapi
 uvicorn
 aiohttp
 aiolimiter
-psycopg2
+psycopg2-binary
+# psycopg2
+requests

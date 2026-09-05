@@ -3,10 +3,11 @@ kind: Service
 metadata:
   name: pokemon-fastapi
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: pokemon-fastapi
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 8000
+      port: 80 
+      targetPort: 8000 # port where the app pod is listening
+      nodePort: 30000

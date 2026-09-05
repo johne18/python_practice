@@ -11,10 +11,10 @@ from typing import List
 
 app = FastAPI(title="Pokemon API")
 
-DB_HOST = os.getenv("DB_HOST", "postgres")
-DB_NAME = os.getenv("DB_NAME", "pokemon")
-DB_USER = os.getenv("DB_USER", "postgres")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "postgres")
+DB_HOST = os.getenv("POSTGRES_DB_HOST", "postgres")
+DB_NAME = os.getenv("POSTGRES_DB", "pokemon")
+DB_USER = os.getenv("POSTGRES_USER", "postgres")
+DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
 POKEMON_API = os.getenv("POKEMON_API_URL", "https://pokeapi.co/api/v2")
 
 class PokemonPayload(BaseModel):
@@ -109,6 +109,18 @@ async def save_pokemon(payload: PokemonPayload):
         "id": payload.id,
         "name": payload.name,
     }
+
+
+@app.get("/env")
+def get_env_variable():
+    return {
+        "api_url":      os.getenv('POKEMON_API_URL'),
+        "concurrency":  os.getenv('POKEMON_CONCURRENCY'),
+        "rate_limit":   os.getenv('POKEMON_RATE_LIMIT'),
+        "rate_seconds": os.getenv('POKEMON_RATE_SECONDS'),
+        "timout":       os.getenv('POKEMON_TIMEOUT'),
+    }
+
 
 
 if __name__ == "__main__":
