@@ -8,7 +8,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: worker
-          image: pokemon-worker:1.0
+          image: pokemon-worker:v1
           env:
             - name: API_URL
               value: "http://pokemon-fastapi"

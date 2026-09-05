@@ -17,6 +17,8 @@ kubernetes commands
 
 k8s deployment commands
 - kubectl apply -f k8s/<kubernetes_related_file.yml> <- use this to restart deployment if any configuration changes
+- kubectl apply -R -f ./k8s/
+
 - kubectl port-forward svc/<name_of_k8s_deployment> 8000:80 - portforward from local machine port to k8s service
 - kubectl apply -f k8s/ - Think about what you are deploying when doing this. If structured correctly, it should deploy only manifests for an app
     - ex structure:  

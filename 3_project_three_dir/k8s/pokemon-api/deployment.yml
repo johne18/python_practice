@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: pokemon-fastapi
-          image: pokefast-api:dockeronly-v2
+          image: pokemon-fastapi:v1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
