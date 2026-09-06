@@ -33,13 +33,13 @@ jobs:
 
       - name: Run passing tests
         if: inputs.result == 'pass'
-        run: python -m pytest -vv ./mini_assignment/test_app.py
+        run: python -m pytest -vv ./test_app.py
 
       - name: Run intentional failing test
         if: inputs.result == 'fail'
         shell: bash
         run: |
-          python -m pytest -vv ./mini_assignment/test_app_failure.py
+          python -m pytest -vv ./test_app_failure.py
 
       - name: Build Docker image
         run: docker build -t mini-assignment:test .
