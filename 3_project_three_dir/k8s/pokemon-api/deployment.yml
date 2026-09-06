@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: pokemon-fastapi
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: pokemon-fastapi
@@ -18,11 +18,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
+
           envFrom:
             - configMapRef:
                 name: pokemon-config
             - secretRef:
                 name: postgres-secret
+          
           resources:
             requests:
               cpu: "100m"
@@ -30,10 +32,33 @@ spec:
             limits:
               cpu: "500m"
               memory: "256Mi"
+          
           volumeMounts:
             - name: a-volume
               mountPath: /etc/configs
               readOnly: true
+
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 5
+            failureThreshold: 12
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 5
+            failureThreshold: 2
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            periodSeconds: 5
+            failureThreshold: 3
+            
       volumes:
       - name: a-volume
         configMap:

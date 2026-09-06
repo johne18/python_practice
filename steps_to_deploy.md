@@ -9,6 +9,7 @@ Run the docker image (create a running container)
 
 kubernetes commands
 - kind create cluster --name <name_of_k8s_cluster>
+- kind create cluster --config <yml_config_file> --name <name_of_k8s_cluster>
 - kubectl get nodes
 - kubectl cluster-info
 - kind load docker-image <image_name>:<tag_of_image> -n <name_of_k8s_cluster>
@@ -36,3 +37,8 @@ k8s rollouts and deletes
 - kubectl rollout undo deployment/<name_of_k8s_cluster>
 - kubectl rollout status deployment/<name_of_k8s_cluster>
 - kind delete cluster -n <name_of_k8s_cluster>
+- kubectl get deployment <deployment_name> -o yaml
+
+
+Prometheus commands:
+    increase(pokemon_requests_total{endpoint="/health"}[40m])
