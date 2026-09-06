@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       result:
-        description: "Choose the result to demonstrate"
+        description: "Choose pass or fail job"
         required: true
         type: choice
         options:
