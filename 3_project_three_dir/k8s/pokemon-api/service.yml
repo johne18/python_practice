@@ -8,6 +8,6 @@ spec:
     app: pokemon-fastapi
   ports:
     - protocol: TCP
-      port: 80 # port where pods can communicate with this container
+      port: 80 # port where pods can communicate with this service
       targetPort: 8000 # port where the app pod is listening
-      nodePort: 30000
+      nodePort: 30000 # expose service outside the cluster

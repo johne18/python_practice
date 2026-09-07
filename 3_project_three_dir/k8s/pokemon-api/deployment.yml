@@ -3,14 +3,20 @@ kind: Deployment
 metadata:
   name: pokemon-fastapi
 spec:
-  replicas: 1
+  replicas: 3
+
+  # Select pods with this label
   selector:
     matchLabels:
       app: pokemon-fastapi
+
+  # Pod template
   template:
     metadata:
       labels:
         app: pokemon-fastapi
+    
+    # Container specs
     spec:
       containers:
         - name: pokemon-fastapi
@@ -26,9 +32,11 @@ spec:
                 name: postgres-secret
           
           resources:
+            # Reserve this amount of resources on a Pod for the app to run
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "100m" # millicores (1/10 of a core)
+              memory: "128Mi" # Mebibyte
+            # Ceiling of resources for this container to use
             limits:
               cpu: "500m"
               memory: "256Mi"
