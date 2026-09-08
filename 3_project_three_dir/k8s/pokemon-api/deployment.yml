@@ -46,6 +46,7 @@ spec:
               mountPath: /etc/configs
               readOnly: true
 
+          # Restarts the container if it fails to start up
           startupProbe:
             httpGet:
               path: /health
@@ -53,6 +54,7 @@ spec:
             periodSeconds: 5
             failureThreshold: 12
 
+          # Readiness to receive traffic, remove from service endpoint if not
           readinessProbe:
             httpGet:
               path: /health
@@ -60,6 +62,7 @@ spec:
             periodSeconds: 5
             failureThreshold: 2
 
+          # Live check, if not then restart
           livenessProbe:
             httpGet:
               path: /health
@@ -67,12 +70,13 @@ spec:
             periodSeconds: 5
             failureThreshold: 3
             
+      # Mount Volume
       volumes:
       - name: a-volume
         configMap:
           name: pokemon-config
           items:
-          - key: example.properties
-            path: example.properties
+          - key: example.properties # Key in ConfigMap
+            path: example.properties # Path to save values in
 
         

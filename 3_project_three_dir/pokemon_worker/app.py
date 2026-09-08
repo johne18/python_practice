@@ -21,7 +21,7 @@ def save_to_api(pokemon: dict):
     
 
 if __name__ == "__main__":
-    pokemon_ids = [258, 69, 67, 420]
+    pokemon_ids = [258, 471, 69, 384, 21, 67, 94, 393, 448, 420]
     for pokemon_id in pokemon_ids:
         pokemon = fetch_pokemon_from_api(pokemon_id)
         result = save_to_api(pokemon)
