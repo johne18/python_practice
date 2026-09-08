@@ -49,6 +49,18 @@ def get_connection():
     )
 
 
+def _pokemon_request(
+        method: str,
+        endpoint: str,
+        status: str,
+    ):
+    POKEMON_REQUESTS.labels(
+        method,
+        endpoint,
+        status
+    ).inc()
+
+
 @app.get("/metrics")
 async def metrics():
     return Response(
@@ -63,7 +75,7 @@ async def health():
 
     try:
         result = {"status": "ok"}
-        POKEMON_REQUESTS.labels("GET", "/health", "200").inc()
+        _pokemon_request("GET", "/health", "200")
         return result
     finally:
         POKEMON_REQUEST_DURATION.labels("/health").observe(
@@ -100,6 +112,7 @@ async def get_pokemon_by_id(pokemon_id: int):
                     response.raise_for_status()
                     data = await response.json()
 
+    _pokemon_request("GET", "/pokemon/{pokemon_id}", "200")
     return {
         "id": data["id"],
         "name": data["name"],
@@ -136,6 +149,7 @@ async def save_pokemon(payload: PokemonPayload):
     cur.close()
     conn.close()
 
+    _pokemon_request("POST", "/pokemon", "200")
     return {
         "status": "saved",
         "id": payload.id,
@@ -145,6 +159,7 @@ async def save_pokemon(payload: PokemonPayload):
 
 @app.get("/env")
 def get_env_variable():
+    _pokemon_request("POST", "/env", "200")
     return {
         "api_url":      os.getenv('POKEMON_API_URL'),
         "concurrency":  os.getenv('POKEMON_CONCURRENCY'),
